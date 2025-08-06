@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 from django.urls import reverse_lazy
 
 from .forms import BirthdayForm
@@ -37,7 +37,14 @@ class BirthdayCreateView(CreateView):
     model = Birthday
     form_class = BirthdayForm
     template_name = 'birthday/birthday.html'
-    success_url = reverse_lazy('birthday:list') 
+    success_url = reverse_lazy('birthday:list')
+
+
+class BirthdayUpdateView(UpdateView):
+    model = Birthday
+    form_class = BirthdayForm
+    template_name = 'birthday/birthday.html'
+    success_url = reverse_lazy('birthday:list')
 
 
 def delete_birthday(request, pk):
