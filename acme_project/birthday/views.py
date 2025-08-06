@@ -1,6 +1,6 @@
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 from django.urls import reverse_lazy
 
 from .forms import BirthdayForm
@@ -27,23 +27,29 @@ def birthday(request, pk=None):
     return render(request, 'birthday/birthday.html', context)
 
 
-class BirthdayListView(ListView):
-    model = Birthday
-    ordering = 'id'
-    paginate_by = 10
-
-
-class BirthdayCreateView(CreateView):
+class BirthdayMixin:
     model = Birthday
     form_class = BirthdayForm
     template_name = 'birthday/birthday.html'
     success_url = reverse_lazy('birthday:list')
 
 
-class BirthdayUpdateView(UpdateView):
+class BirthdayListView(ListView):
     model = Birthday
-    form_class = BirthdayForm
-    template_name = 'birthday/birthday.html'
+    ordering = 'id'
+    paginate_by = 10
+
+
+class BirthdayCreateView(BirthdayMixin, CreateView):
+    pass
+
+
+class BirthdayUpdateView(BirthdayMixin, UpdateView):
+    pass
+
+
+class BirthdayDeleteView(DeleteView):
+    model = Birthday
     success_url = reverse_lazy('birthday:list')
 
 
